@@ -353,6 +353,32 @@ AssemblyGuideController generico + pasos + navegacion Anterior/Siguiente).
 Estado: FASE 10 COMPLETADA. Siguiente -> FASE 11 (guia de desensamblaje: misma
 arquitectura, pasos distintos - ya cubierto por el controller generico + RAM json).
 
+### FASE 11 — GUIA DE DESENSAMBLaje (2026-08-29)
+
+Cubierta por la arquitectura generica de FASE 10: `AssemblyGuideController` recibe
+cualquier lista de pasos y `PCARFlowController` enruta `disassemblySteps` (5 pasos
+de desmontaje definidos en `ram.json`: apagar, descargar estatica, identificar RAM,
+liberar seguros, retirar) al boton "Desensamblar". No hace falta nueva logica.
+
+Estado: FASE 11 COMPLETADA (misma arquitectura, pasos distintos). Siguiente ->
+FASE 12 (modelo 3D RAM: primitivos de Unity -> prefab reutilizable).
+
+### FASE 12 — MODELO 3D RAM (2026-08-29)
+
+- `Assets/Editor/RamModelBuilder.cs`: tool batchmode que construye un modelo de RAM
+  con primitivos de Unity (Cubes): placa PCB verde, chips laterales negros
+  (8 por lado), contactos dorados (40) y muesca de polaridad.
+- Genera 3 materiales URP en `Assets/Materials/`:
+  `PCB_DarkGreen.mat`, `Chip_Black.mat`, `Contact_Gold.mat`.
+- **Prefab reutilizable:** `Assets/Prefabs/Components/RAM.prefab` (~188 KB).
+  Se puede sustituir por un modelo de Blender (D:\Blender) mas adelante sin tocar codigo.
+- Nota batchmode: `Shader.Find` devuelve null con `-nographics` -> el tool debe
+  ejecutarse SIN `-nographics` para que la pipeline de shaders inicialice.
+  Se agrego ResolveShader() con varios fallbacks.
+
+Estado: FASE 12 COMPLETADA. Siguiente -> FASE 13 (SSD, CPU, GPU replicando el
+patron de RAM).
+
 ## Principios
 
 1. Que funcione.
