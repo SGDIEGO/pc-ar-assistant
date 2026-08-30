@@ -1,0 +1,93 @@
+{
+    "id": "ram",
+    "name": "Memoria RAM",
+    "description": "La memoria RAM (Random Access Memory) es la memoria de acceso aleatorio donde el procesador almacena temporalmente los datos e instrucciones que necesita para ejecutar programas en tiempo real.",
+    "function": "Almacenar temporalmente datos e instrucciones en uso para acceso rapido del procesador. Mientras mas RAM tenga el equipo, mas programas puede ejecutar simultaneamente sin perder rendimiento.",
+    "specifications": [
+        "Tipo: DDR4",
+        "Capacidad: 8 GB",
+        "Velocidad: 3200 MHz",
+        "Factor de forma: DIMM (desktop)",
+        "Voltaje: 1.2 V"
+    ],
+    "warnings": [
+        "Apague y desconecte el equipo antes de manipular la RAM.",
+        "Sujete la RAM por los bordes; evite tocar los contactos dorados.",
+        "Descargue la electricidad estatica (use pulsera o toque metal) antes de instalarla.",
+        "Aplique presion firme pero sin forzar; la RAM debe encajar sin danarse."
+    ],
+    "assemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Identificar la ranura DIMM",
+            "description": "Localice la ranura DIMM de la placa madre. En placas con varios slots, comience por la ranura indicada en el manual (normalmente la A2 o B2).",
+            "warning": "",
+            "arHint": "Resaltar la ranura DIMM correspondiente."
+        },
+        {
+            "stepNumber": 2,
+            "title": "Abrir los seguros laterales",
+            "description": "Presione hacia afuera los seguros (clips) de ambos extremos de la ranura hasta que se abran.",
+            "warning": "",
+            "arHint": "Mostrar flechas sobre los seguros laterales."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Alinear la muesca de la RAM",
+            "description": "Verifique la muesca (muesca de polaridad) de la RAM y alineela con la ranura de la placa. Solo encaja en una orientacion.",
+            "warning": "No fuerce: si no entra, revise la orientacion.",
+            "arHint": "Indicador de alineacion sobre la muesca de la RAM."
+        },
+        {
+            "stepNumber": 4,
+            "title": "Insertar la RAM verticalmente",
+            "description": "Inserte la memoria en la ranura aplicando presion uniforme por ambos bordes hasta que los seguros laterales cierren con un clic.",
+            "warning": "",
+            "arHint": "Flecha vertical indicando la insercion."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Verificar los seguros",
+            "description": "Confirme que los seguros laterales quedaron cerrados sujetando la RAM firmemente.",
+            "warning": "",
+            "arHint": "Resaltar los seguros cerrados."
+        }
+    ],
+    "disassemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar el equipo",
+            "description": "Apague la computadora por completo y desconecte el cable de alimentacion.",
+            "warning": "",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 2,
+            "title": "Descargar estatica",
+            "description": "Descargue la electricidad estatica tocando una superficie metalica conectada a tierra o usando una pulsera antiestatica.",
+            "warning": "Evite la estatica para no danar la memoria.",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 3,
+            "title": "Identificar la RAM",
+            "description": "Localice la memoria RAM instalada en la ranura DIMM.",
+            "warning": "",
+            "arHint": "Resaltar la RAM."
+        },
+        {
+            "stepNumber": 4,
+            "title": "Liberar los seguros laterales",
+            "description": "Presione hacia afuera los seguros de ambos extremos. La RAM se elevara ligeramente.",
+            "warning": "",
+            "arHint": "Flechas sobre los seguros."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Retirar la RAM",
+            "description": "Sujete la RAM por los bordes y retirela sin tocar los contactos dorados.",
+            "warning": "No toque los contactos dorados.",
+            "arHint": "Flecha vertical de extraccion."
+        }
+    ]
+}

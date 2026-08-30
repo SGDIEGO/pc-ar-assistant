@@ -1,0 +1,61 @@
+# Unity generated folders
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/[Pp]rojectSettings/SceneTemplateSettings.json
+
+# Unity 3rd party plugin / asset
+/[Aa]ssets/[Aa]sset[Ss]toreTools/
+/[Aa]ssets/Plugins/Editor/[Jj]et[Bb]rains/
+
+# Visual Studio cache / options
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Unity generated crash reports
+sysinfo.txt
+*.stackdump
+
+# Build Reports
+/[Aa]ssets/PlasticSCM/Editor/.cache/
+/[Aa]ssets/StreamingAssets/aa/
+
+# Unity batchmode operation logs (root)
+unity_*.log
+unity_*.log.stdout
+unity_*.log.stderr
+
+# El proyecto Unity esta anidado bajo UnityProject/ -> repetir ignores con scope.
+/UnityProject/Library/
+/UnityProject/Temp/
+/UnityProject/Obj/
+/UnityProject/Build/
+/UnityProject/Builds/
+/UnityProject/Logs/
+/UnityProject/UserSettings/
+/UnityProject/.vscode/
+/UnityProject/*.csproj
+/UnityProject/*.sln
+/UnityProject/build/
+/UnityProject/.utmp/

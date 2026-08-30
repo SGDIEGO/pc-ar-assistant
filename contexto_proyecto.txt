@@ -1,0 +1,690 @@
+# CONTEXTO DEL PROYECTO
+
+Estoy desarrollando un proyecto universitario para el curso "Tópicos en Tecnologías Inmersivas".
+
+El proyecto consiste en desarrollar una aplicación móvil Android que utilice Realidad Aumentada (AR) para identificar componentes de una computadora mediante la cámara y proporcionar información y una guía visual para su ensamblaje y desensamblaje.
+
+El objetivo principal es desarrollar un prototipo funcional de aprendizaje y asistencia para hardware de computadoras.
+
+==================================================
+OBJETIVO DEL PROYECTO
+==================================================
+
+La aplicación debe permitir que un usuario apunte la cámara de su teléfono hacia un componente físico de computadora.
+
+La aplicación debe:
+
+1. Reconocer el componente.
+2. Identificar qué componente es.
+3. Mostrar información técnica del componente.
+4. Permitir seleccionar "Ensamblar" o "Desensamblar".
+5. Mostrar una guía paso a paso utilizando Realidad Aumentada.
+6. Mostrar flechas, indicadores, textos, resaltados y/o modelos 3D para explicar cada paso.
+7. Permitir avanzar y retroceder entre los pasos.
+8. Mostrar advertencias y recomendaciones de seguridad cuando corresponda.
+
+El sistema NO debe intentar inicialmente reconocer cualquier componente existente en el mercado.
+
+El reconocimiento estará limitado a un conjunto pequeño de componentes.
+
+==================================================
+COMPONENTES INICIALES
+==================================================
+
+Para el MVP se trabajará inicialmente con:
+
+- Memoria RAM
+- SSD
+- CPU
+- GPU
+
+Sin embargo, el desarrollo inicial debe comenzar solamente con:
+
+1. RAM
+
+Una vez que el flujo completo funcione correctamente con RAM, se incorporarán los demás componentes.
+
+==================================================
+FLUJO PRINCIPAL
+==================================================
+
+El flujo esperado de la aplicación es:
+
+INICIO
+  ↓
+ESCANEAR COMPONENTE
+  ↓
+CÁMARA
+  ↓
+RECONOCIMIENTO VISUAL
+  ↓
+COMPONENTE IDENTIFICADO
+  ↓
+PANTALLA DE INFORMACIÓN
+  ↓
+[ INFORMACIÓN ]
+[ ENSAMBLAR ]
+[ DESENSAMBLAR ]
+  ↓
+GUÍA AR
+  ↓
+PASOS INTERACTIVOS
+  ↓
+FINALIZACIÓN
+
+Ejemplo:
+
+El usuario apunta la cámara hacia una memoria RAM.
+
+El sistema identifica:
+
+"Memoria RAM"
+
+Luego muestra:
+
+--------------------------------
+MEMORIA RAM
+--------------------------------
+
+Tipo: DDR4
+Función: Memoria de acceso aleatorio
+Capacidad: 8 GB
+Velocidad: 3200 MHz
+
+[ Ver información ]
+[ Ensamblar ]
+[ Desensamblar ]
+
+Si selecciona "Ensamblar":
+
+Paso 1:
+"Identifique la ranura DIMM de la placa madre."
+
+La aplicación debe mostrar visualmente la ubicación de la ranura.
+
+Paso 2:
+"Abra los seguros laterales de la ranura."
+
+Paso 3:
+"Alinee la muesca de la memoria RAM con la ranura."
+
+Paso 4:
+"Inserte la memoria verticalmente hasta asegurarla."
+
+Paso 5:
+"Verifique que los seguros laterales estén cerrados."
+
+Al finalizar:
+
+"Instalación completada."
+
+El procedimiento de desensamblaje tendrá sus propios pasos.
+
+==================================================
+TECNOLOGÍAS
+==================================================
+
+Quiero utilizar las siguientes tecnologías:
+
+- Unity 6
+- C#
+- Visual Studio Code como editor de código
+- Unity Hub
+- Android SDK
+- Android Build Support
+- AR Foundation
+- ARCore XR Plugin
+- Blender para crear/modificar modelos 3D
+- Git/GitHub para control de versiones
+
+La aplicación estará orientada inicialmente a Android.
+
+NO quiero utilizar C++.
+
+NO quiero utilizar Unreal Engine.
+
+==================================================
+ENTORNO DE DESARROLLO
+==================================================
+
+El código C# debe desarrollarse utilizando Visual Studio Code.
+
+Unity será utilizado para:
+
+- Crear y configurar el proyecto.
+- Crear escenas.
+- Configurar AR.
+- Configurar cámaras.
+- Crear GameObjects.
+- Crear Prefabs.
+- Importar modelos 3D.
+- Configurar UI.
+- Configurar animaciones.
+- Ejecutar y probar la aplicación.
+- Generar el APK.
+
+VS Code será utilizado para:
+
+- Escribir scripts C#.
+- Crear clases.
+- Crear controladores.
+- Crear modelos de datos.
+- Crear sistemas de interacción.
+- Depurar código cuando sea posible.
+
+==================================================
+REALIDAD AUMENTADA
+==================================================
+
+Utilizar AR Foundation como capa principal de realidad aumentada.
+
+Utilizar ARCore XR Plugin para Android.
+
+La aplicación debe utilizar inicialmente:
+
+- AR Camera
+- AR Session
+- AR Session Origin / XR Origin según la arquitectura disponible en Unity 6
+- Plane detection si es necesario
+- Raycast
+- Tracking espacial
+- Anchors si son necesarios
+
+No agregar funcionalidades AR innecesarias inicialmente.
+
+El objetivo es conseguir primero una escena AR básica funcionando correctamente en un dispositivo Android.
+
+==================================================
+RECONOCIMIENTO DEL COMPONENTE
+==================================================
+
+La aplicación debe utilizar reconocimiento visual para identificar componentes.
+
+Sin embargo, el sistema debe diseñarse de forma modular para que el reconocimiento pueda cambiarse posteriormente sin modificar el resto de la aplicación.
+
+La arquitectura deseada es:
+
+Camera
+  ↓
+Recognition Service
+  ↓
+Component ID
+  ↓
+Component Repository
+  ↓
+Component Information
+  ↓
+AR Guide
+
+Por ejemplo:
+
+Recognition Service
+  ↓
+"RAM"
+  ↓
+ComponentRepository
+  ↓
+RamComponent
+  ↓
+AssemblyProcedure
+  ↓
+AR Guide
+
+NO acoplar directamente el modelo de IA con la interfaz.
+
+==================================================
+ESTRATEGIA DE DESARROLLO DEL RECONOCIMIENTO
+==================================================
+
+No quiero comenzar entrenando una IA compleja.
+
+Primero debe implementarse un reconocimiento simulado/manual para poder desarrollar el resto del sistema.
+
+Por ejemplo:
+
+Botón:
+
+"Simular reconocimiento RAM"
+
+Esto debe comportarse como si el modelo de IA hubiera identificado una RAM.
+
+Esto permitirá desarrollar:
+
+- Información
+- UI
+- procedimientos
+- AR
+- modelos 3D
+- navegación
+
+Posteriormente se reemplazará el reconocimiento simulado por un modelo real de visión artificial.
+
+La arquitectura debe permitir cambiar:
+
+MockRecognitionService
+
+por:
+
+AIRecognitionService
+
+sin modificar el resto de la aplicación.
+
+==================================================
+IA / VISIÓN ARTIFICIAL
+==================================================
+
+La integración de IA debe realizarse posteriormente.
+
+La IA tendrá una única responsabilidad inicial:
+
+Identificar el tipo de componente observado.
+
+Ejemplo de salida:
+
+{
+    "component": "RAM",
+    "confidence": 0.94
+}
+
+O:
+
+{
+    "component": "GPU",
+    "confidence": 0.91
+}
+
+Si la confianza es demasiado baja:
+
+"Componente no identificado. Intente acercarse o mejorar la iluminación."
+
+No es necesario reconocer marcas o modelos específicos.
+
+Por ejemplo:
+
+Correcto:
+"RAM"
+
+No necesario:
+"Kingston Fury Beast DDR4 3200 8GB"
+
+==================================================
+DATOS DE COMPONENTES
+==================================================
+
+Los componentes deben diseñarse utilizando datos independientes del código.
+
+Inicialmente puede utilizarse JSON o ScriptableObjects.
+
+Cada componente debe tener:
+
+- id
+- nombre
+- descripción
+- función
+- características
+- advertencias
+- modelo 3D
+- pasos de ensamblaje
+- pasos de desensamblaje
+
+Ejemplo conceptual:
+
+{
+    "id": "ram",
+    "name": "Memoria RAM",
+    "description": "...",
+    "function": "...",
+    "specifications": [],
+    "warnings": [],
+    "assemblySteps": [],
+    "disassemblySteps": []
+}
+
+Preferir una arquitectura que permita agregar nuevos componentes sin modificar la lógica principal.
+
+==================================================
+GUÍA DE ENSAMBLAJE
+==================================================
+
+La guía debe ser genérica y reutilizable.
+
+Debe existir un sistema como:
+
+AssemblyGuideController
+
+que reciba un componente y sus pasos.
+
+Cada paso debería contener:
+
+- título
+- descripción
+- número de paso
+- imagen opcional
+- modelo/animación opcional
+- posición AR
+- indicador visual
+- advertencia opcional
+
+Ejemplo:
+
+Step 1
+Título:
+"Identificar ranura DIMM"
+
+Descripción:
+"Localice la ranura correspondiente en la placa madre."
+
+AR:
+Resaltar zona de la ranura.
+
+Step 2
+Título:
+"Alinear RAM"
+
+Descripción:
+"Alinee la muesca de la RAM con la ranura."
+
+AR:
+Mostrar flecha.
+
+==================================================
+GUÍA DE DESENSAMBLAJE
+==================================================
+
+Debe utilizar la misma arquitectura que ensamblaje, pero con pasos diferentes.
+
+Ejemplo RAM:
+
+1. Apagar el equipo.
+2. Desconectar la alimentación.
+3. Identificar la memoria.
+4. Liberar los seguros laterales.
+5. Retirar la memoria sujetándola por los bordes.
+
+==================================================
+MODELOS 3D
+==================================================
+
+Los modelos 3D se crearán o editarán mediante Blender.
+
+Inicialmente no es necesario crear modelos extremadamente detallados.
+
+Se pueden utilizar modelos simplificados pero visualmente claros.
+
+Modelos iniciales:
+
+- RAM
+- Motherboard
+- SSD
+- CPU
+- GPU
+
+La aplicación debe utilizar Prefabs de Unity para los modelos 3D.
+
+Los modelos deben poder reutilizarse en:
+
+- información
+- ensamblaje
+- desensamblaje
+- animaciones
+
+==================================================
+REALIDAD AUMENTADA PARA LOS PASOS
+==================================================
+
+La AR no necesita detectar inicialmente cada movimiento físico del usuario.
+
+La primera versión será una guía visual.
+
+Ejemplo:
+
+Componente real:
+RAM
+
+La aplicación muestra:
+
+🟢 Zona resaltada
+↓
+"Coloque la RAM en esta ranura"
+
+Después:
+
+➡️ Flecha virtual
+
+Después:
+
+📌 Indicador
+
+Después:
+
+🎞️ Animación 3D del procedimiento
+
+El usuario puede avanzar:
+
+[ ← Anterior ] [ Siguiente → ]
+
+==================================================
+INTERFAZ
+==================================================
+
+La interfaz debe ser sencilla y moderna.
+
+Pantallas:
+
+1. Splash / Inicio
+2. Menú principal
+3. Escaneo
+4. Componente identificado
+5. Información
+6. Selección de procedimiento
+7. Guía de ensamblaje
+8. Guía de desensamblaje
+9. Finalización
+
+La interfaz debe estar pensada para teléfonos Android.
+
+==================================================
+ARQUITECTURA DEL PROYECTO
+==================================================
+
+Proponer una estructura similar a:
+
+Assets/
+│
+├── Scenes/
+│
+├── Scripts/
+│   ├── AR/
+│   ├── Recognition/
+│   ├── Components/
+│   ├── Assembly/
+│   ├── UI/
+│   └── Core/
+│
+├── Prefabs/
+│   ├── AR/
+│   ├── Components/
+│   └── UI/
+│
+├── Models/
+│   ├── RAM/
+│   ├── CPU/
+│   ├── SSD/
+│   └── GPU/
+│
+├── Materials/
+│
+├── Animations/
+│
+├── Data/
+│
+└── Textures/
+
+La arquitectura debe evitar un único script gigante.
+
+Utilizar clases pequeñas y responsabilidades separadas.
+
+==================================================
+PRINCIPIOS DE DESARROLLO
+==================================================
+
+Prioridad absoluta:
+
+1. Que funcione.
+2. Que sea fácil de probar.
+3. Que sea modular.
+4. Que sea fácil de ampliar.
+
+No implementar funcionalidades avanzadas antes de tener el MVP funcionando.
+
+Evitar sobreingeniería.
+
+No crear backend inicialmente salvo que sea realmente necesario.
+
+No crear autenticación inicialmente.
+
+No crear base de datos remota inicialmente.
+
+No implementar reconocimiento de manos inicialmente.
+
+No implementar reconocimiento de movimientos físicos inicialmente.
+
+No implementar compatibilidad automática de hardware inicialmente.
+
+==================================================
+MVP
+==================================================
+
+El primer MVP debe tener solamente:
+
+1. Aplicación Android.
+2. Cámara AR funcionando.
+3. Reconocimiento simulado de RAM.
+4. Información de RAM.
+5. Botón "Ensamblar".
+6. Guía AR de ensamblaje.
+7. Botón "Desensamblar".
+8. Guía AR de desensamblaje.
+9. Modelo 3D de RAM.
+10. Navegación entre pasos.
+
+Cuando esto funcione correctamente:
+
+Agregar:
+
+11. SSD.
+12. CPU.
+13. GPU.
+
+Finalmente:
+
+14. Integración del modelo de IA.
+15. Reconocimiento automático mediante cámara.
+
+==================================================
+FORMA DE TRABAJO
+==================================================
+
+Quiero que me guíes paso a paso.
+
+NO quiero que intentes crear todo el proyecto de una sola vez.
+
+Primero analiza el entorno y dime qué debo instalar/configurar.
+
+Después trabajaremos por fases.
+
+FASE 1:
+Configuración del entorno.
+
+FASE 2:
+Crear proyecto Unity 6.
+
+FASE 3:
+Configurar Android.
+
+FASE 4:
+Configurar VS Code para Unity/C#.
+
+FASE 5:
+Instalar AR Foundation y ARCore.
+
+FASE 6:
+Crear primera escena AR y comprobar que funciona en Android.
+
+FASE 7:
+Crear arquitectura de componentes.
+
+FASE 8:
+Crear reconocimiento simulado.
+
+FASE 9:
+Crear información de RAM.
+
+FASE 10:
+Crear guía de ensamblaje.
+
+FASE 11:
+Crear guía de desensamblaje.
+
+FASE 12:
+Integrar modelo 3D y animaciones.
+
+FASE 13:
+Agregar SSD, CPU y GPU.
+
+FASE 14:
+Integrar reconocimiento mediante IA.
+
+FASE 15:
+Optimizar y generar APK final.
+
+En cada fase:
+
+- Explica qué vamos a hacer.
+- Indica qué archivos crear/modificar.
+- Proporciona el código completo necesario.
+- Indica exactamente dónde colocar cada archivo.
+- Indica cómo probarlo.
+- Si existe un error, ayúdame a resolverlo antes de continuar.
+- No avances a la siguiente fase hasta que la actual funcione.
+
+IMPORTANTE:
+
+Estoy priorizando velocidad de desarrollo.
+
+Quiero una solución sencilla, funcional y mantenible.
+
+No quiero implementar complejidad innecesaria.
+
+
+
+-------------------------------------------------------
+
+┌──────────────────────────────┐
+│       UNITY 6 + C#           │
+└──────────────┬───────────────┘
+               │
+               ▼
+       📱 Cámara + ARCore
+               │
+               ▼
+      🧪 RECONOCIMIENTO MOCK
+               │
+               ▼
+          🧠 "RAM"
+               │
+               ▼
+      ┌───────────────────┐
+      │ Información RAM   │
+      └─────────┬─────────┘
+                │
+         ┌──────┴───────┐
+         ▼              ▼
+    🔧 Ensamblar    🔨 Desensamblar
+         │              │
+         └──────┬───────┘
+                ▼
+          🥽 Guía AR
+                │
+                ▼
+          🎞️ Modelo 3D
