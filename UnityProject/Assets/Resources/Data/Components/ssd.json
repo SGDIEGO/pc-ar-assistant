@@ -1,0 +1,86 @@
+{
+    "id": "ssd",
+    "name": "SSD (Disco de Estado Solido)",
+    "description": "El SSD (Solid State Drive) es un dispositivo de almacenamiento que usa memoria flash NAND, sin partes moviles, ofreciendo lecturas/escrituras mucho mas rapidas que los discos duros mecanicos.",
+    "function": "Almacenar el sistema operativo, programas y datos de forma permanente. Al no tener partes mecanicas, ofrece tiempos de arranque y caga de aplicaciones muy rapidos.",
+    "specifications": [
+        "Interfaz: SATA III (6 Gb/s)",
+        "Factor de forma: 2.5 pulgadas",
+        "Capacidad: 240 GB",
+        "Tipo: TLC NAND",
+        "Lectura secuencial: hasta 550 MB/s"
+    ],
+    "warnings": [
+        "Apague y desconecte el equipo antes de manipular el SSD.",
+        "Sujetelo por los bordes y evite tocar el conector SATA",
+        "Descargue la electricidad estatica antes de instalarlo.",
+        "No doble ni presione el cuerpo del SSD."
+    ],
+    "assemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar y desconectar el equipo",
+            "description": "Apague la computadora, desconecte la fuente de alimentacion y abra la tapa lateral del gabinete.",
+            "warning": "",
+            "arHint": "Resaltar la zona de bahias de almacenamiento."
+        },
+        {
+            "stepNumber": 2,
+            "title": "Ubicar la bahia 2.5",
+            "description": "Localice una bahia o soporte para discos de 2.5 pulgadas dentro del gabinete.",
+            "warning": "",
+            "arHint": "Flecha hacia la bahia 2.5 disponible."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Fijar el SSD",
+            "description": "Asegure el SSD en la bahia con los tornillos suministrados, alineando la orientacion del conector SATA.",
+            "warning": "",
+            "arHint": "Animacion de insercion del SSD en la bahia."
+        },
+        {
+            "stepNumber": 4,
+            "title": "Conectar cable SATA de datos",
+            "description": "Conecte un cable SATA de datos desde el SSD a un puerto SATA de la placa madre.",
+            "warning": "",
+            "arHint": "Flecha indicando el cable SATA de datos."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Conectar cable de alimentacion",
+            "description": "Conecte el cable de alimentacion SATA desde la fuente de poder al SSD.",
+            "warning": "",
+            "arHint": "Flecha indicando el cable de alimentacion."
+        }
+    ],
+    "disassemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar y desconectar el equipo",
+            "description": "Apague la computadora, desconecte la alimentacion y abra el gabinete.",
+            "warning": "",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 2,
+            "title": "Desconectar cables",
+            "description": "Retire con cuidado el cable de datos SATA y el de alimentacion del SSD.",
+            "warning": "",
+            "arHint": "Flechas sobre los conectores del SSD."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Retirar tornillos",
+            "description": "Remueva los tornillos que fijan el SSD a la bahia.",
+            "warning": "",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 4,
+            "title": "Extraer el SSD",
+            "description": "Deslice el SSD fuera de la bahia sujetandolo por los bordes.",
+            "warning": "Evite tocar el conector SATA.",
+            "arHint": "Flecha de extraccion del SSD."
+        }
+    ]
+}

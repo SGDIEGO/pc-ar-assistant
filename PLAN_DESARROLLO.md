@@ -379,6 +379,26 @@ FASE 12 (modelo 3D RAM: primitivos de Unity -> prefab reutilizable).
 Estado: FASE 12 COMPLETADA. Siguiente -> FASE 13 (SSD, CPU, GPU replicando el
 patron de RAM).
 
+### FASE 13 — SSD, CPU, GPU (2026-08-29)
+
+Datos JSON (independientes del codigo, los carga `ComponentRepository`):
+- `Assets/Resources/Data/Components/ssd.json` — SSD SATA 2.5" (240 GB).
+- `Assets/Resources/Data/Components/cpu.json` — CPU socket AM4 (6 nucleos).
+- `Assets/Resources/Data/Components/gpu.json` — GPU PCIe x16 (6 GB GDDR6).
+Cada uno con function, specifications, warnings y assembly/disassembly steps.
+
+Modelos 3D (primitivos) via `Assets/Editor/ComponentModelBuilder.cs`:
+- `Assets/Prefabs/Components/SSD.prefab`, `CPU.prefab`, `GPU.prefab`
+  (PCB/shroud/ventiladores/etc. + materiales URP).
+- `Assets/Editor/DataVerifier.cs` — valida que los 4 JSON carguen (id, conteo de
+  pasos). Verificado en batchmode: ram/ssd/cpu/gpu OK.
+
+Nota: el reconocimiento (mock) sigue devolviendo solo RAM por MVP; estos datos
+quedan listos para ampliarlo.
+
+Estado: FASE 13 COMPLETADA. Siguiente -> FASE 14 (integracion IA:
+AIRecognitionService reemplaza al mock sin tocar el resto).
+
 ## Principios
 
 1. Que funcione.

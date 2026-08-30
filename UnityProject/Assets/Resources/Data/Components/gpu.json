@@ -1,0 +1,94 @@
+{
+    "id": "gpu",
+    "name": "Tarjeta Grafica (GPU)",
+    "description": "La GPU (Graphics Processing Unit) es la tarjeta encargada de procesar graficos e imagenes. Es indispensable para juegos, edicion de video y tareas de computo paralelo.",
+    "function": "Procesar graficos, renderizar imagenes y video, y ejecutar calculos paralelos masivos para mejorar el rendimiento visual del sistema.",
+    "specifications": [
+        "Interfaz: PCIe x16",
+        "Memoria: 6 GB GDDR6",
+        "Salidas: 3x DisplayPort, 1x HDMI",
+        "Alimentacion: 1x 8 pines",
+        "TDP: 140 W"
+    ],
+    "warnings": [
+        "Apague y desconecte el equipo antes de manipular la GPU.",
+        "Sujete la tarjeta por los bordes; el PCB y sus componentes son fragiles.",
+        "Asegure la tarjeta con el tornillo del chasis para evitar que se doble.",
+        "Conecte siempre el cable de alimentacion PCIe de la GPU.",
+        "Descargue la electricidad estatica antes de manipularla."
+    ],
+    "assemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar y desconectar el equipo",
+            "description": "Apague la computadora, desconecte la alimentacion y abra el gabinete.",
+            "warning": "",
+            "arHint": "Resaltar la ranura PCIe x16 de la placa madre."
+        },
+        {
+            "stepNumber": 2,
+            "title": "Retirar las tapas del chasis",
+            "description": "Retire las tapas metalicas del gabinete que coinciden con la ranura PCIe que usara la tarjeta.",
+            "warning": "",
+            "arHint": "Flechas sobre las tapas PCIe."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Insertar la GPU",
+            "description": "Alinee el conector PCIe de la tarjeta con la ranura e inserte la GPU con presion uniforme hasta oir el clic del seguro.",
+            "warning": "",
+            "arHint": "Indicador de alineacion del conector PCIe."
+        },
+        {
+            "stepNumber": 4,
+            "title": "Fijar la tarjeta",
+            "description": "Asegure la GPU al chasis con el tornillo correspondiente.",
+            "warning": "",
+            "arHint": "Flecha sobre el tornillo de fijacion."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Conectar la alimentacion",
+            "description": "Conecte el cable de alimentacion PCIe de 8 pines a la tarjeta grafica.",
+            "warning": "Es obligatorio conectar la alimentacion de la GPU.",
+            "arHint": "Flecha sobre el conector de alimentacion."
+        }
+    ],
+    "disassemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar y desconectar el equipo",
+            "description": "Apague la computadora y desconecte la alimentacion.",
+            "warning": "",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 2,
+            "title": "Desconectar la alimentacion",
+            "description": "Quite el cable de alimentacion PCIe de la tarjeta.",
+            "warning": "",
+            "arHint": "Flecha sobre el conector de alimentacion."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Retirar el tornillo de fijacion",
+            "description": "Remueva el tornillo que fija la GPU al chasis.",
+            "warning": "",
+            "arHint": "Flecha sobre el tornillo."
+        },
+        {
+            "stepNumber": 4,
+            "title": "Liberar el seguro PCIe",
+            "description": "Presione el seguro lateral de la ranura PCIe para liberar la tarjeta.",
+            "warning": "",
+            "arHint": "Flecha sobre el seguro PCIe."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Extraer la GPU",
+            "description": "Retire la tarjeta hacia arriba sujetandola por los bordes y guardela en un lugar antiestatico.",
+            "warning": "Guarde la tarjeta en su bolsa antiestatica.",
+            "arHint": "Flecha de extraccion de la GPU."
+        }
+    ]
+}

@@ -1,0 +1,94 @@
+{
+    "id": "cpu",
+    "name": "Procesador (CPU)",
+    "description": "La CPU (Central Processing Unit) es el cerebro de la computadora: ejecuta las instrucciones de los programas y coordina todos los componentes del sistema.",
+    "function": "Procesar instrucciones y datos, ejecutar programas y controlar el flujo de trabajo de todos los demas componentes del equipo.",
+    "specifications": [
+        "Socket: AM4",
+        "Nucleos: 6",
+        "Hilos: 12",
+        "Frecuencia base: 3.6 GHz",
+        "Cache L3: 32 MB"
+    ],
+    "warnings": [
+        "Apague y desconecte el equipo antes de manipular la CPU.",
+        "No toque los pines o contactos del procesador.",
+        "Las esquinas del empaque se marcan con un triangulo dorado: uselo para la orientacion.",
+        "Evite aplicar fuerza excesiva al instalar el disipador.",
+        "Sin disipador nunca encienda el equipo, el procesador se sobrecalentara."
+    ],
+    "assemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar y desconectar el equipo",
+            "description": "Apague la computadora, desconecte la alimentacion y abra el gabinete.",
+            "warning": "",
+            "arHint": "Resaltar el socket de la placa madre."
+        },
+        {
+            "stepNumber": 2,
+            "title": "Levantar la palanca del socket",
+            "description": "Levante la palanca de retencion del socket para abrirlo.",
+            "warning": "",
+            "arHint": "Flecha sobre la palanca del socket."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Alinear el procesador",
+            "description": "Alinee el triangulo dorado del procesador con la esquina marcada del socket e insertelo sin forzar.",
+            "warning": "No fuerce: la CPU solo encaja en una orientacion.",
+            "arHint": "Indicador de alineacion de esquinas."
+        },
+        {
+            "stepNumber": 4,
+            "title": "Cerrar la palanca",
+            "description": "Baje la palanca de retencion para asegurar el procesador en su lugar.",
+            "warning": "",
+            "arHint": "Flecha de cierre de la palanca."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Aplicar pasta y disipador",
+            "description": "Aplique una pequena cantidad de pasta termica en el centro y monte el disipador conectando su ventilador a la placa.",
+            "warning": "No encienda sin disipador instalado.",
+            "arHint": "Flechas de montaje del disipador."
+        }
+    ],
+    "disassemblySteps": [
+        {
+            "stepNumber": 1,
+            "title": "Apagar y desconectar el equipo",
+            "description": "Apague la computadora y desconecte la alimentacion.",
+            "warning": "",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 2,
+            "title": "Desconectar el ventilador del disipador",
+            "description": "Desconecte el cable del ventilador del conector de la placa madre.",
+            "warning": "",
+            "arHint": "Flecha sobre el conector del ventilador."
+        },
+        {
+            "stepNumber": 3,
+            "title": "Retirar el disipador",
+            "description": "Desmonte el disipador girandolo ligeramente para romper el sello de la pasta termica.",
+            "warning": "",
+            "arHint": ""
+        },
+        {
+            "stepNumber": 4,
+            "title": "Levantar la palanca del socket",
+            "description": "Levante la palanca de retencion del socket.",
+            "warning": "",
+            "arHint": "Flecha sobre la palanca."
+        },
+        {
+            "stepNumber": 5,
+            "title": "Extraer el procesador",
+            "description": "Retire la CPU sujetandola por los bordes, sin tocar los contactos.",
+            "warning": "Evite tocar los contactos dorados.",
+            "arHint": "Flecha de extraccion de la CPU."
+        }
+    ]
+}
