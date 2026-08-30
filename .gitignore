@@ -59,3 +59,6 @@ unity_*.log.stderr
 /UnityProject/*.sln
 /UnityProject/build/
 /UnityProject/.utmp/
+
+# Credenciales y keystore de firma (no subir)
+/keystore/

@@ -419,6 +419,37 @@ esta listo.
 Estado: FASE 14 COMPLETADA. Siguiente -> FASE 15 (optimizacion y APK final:
 splash, iconos, build release firmado).
 
+### FASE 15 — APK FINAL RELEASE (2026-08-29)
+
+Escenas finales (`Assets/Editor/GameSceneBuilder.cs`, batchmode):
+- `Scenes/MainMenu.unity` — menu principal con titulo + boton "Escanear" (y "Salir").
+  Controller `Scripts/UI/MainMenuController.cs` carga la escena MainAR.
+- `Scenes/MainAR.unity` — flujo completo en un solo GameObject "PCAR Flow":
+  AR Session + XR Origin + AR Camera + Bootstrapper + RamInfoScreen +
+  AssemblyGuideController + PCARFlowController (reconocimiento mock -> RAM).
+
+BuildSettings: MainMenu (indice 0) + MainAR.
+
+`AndroidConfigurer` extensiones:
+- `ApplySigning()` — firma con keystore autofirmado `keystore/pcar.keystore`
+  (alias `pcar`, credenciales en `keystore/CREDENCIALES.txt`, AMBOS gitignored).
+- `ApplySplashAndIcon()` — splash con fondo oscuro; icono Android por defecto
+  (sustituible por assets custom en Assets/Icon/).
+- `BuildReleaseApk()` — compila release (IL2CPP, arm64) firmado.
+
+**BUILD RELEASE OK**: `Builds/PCAR_Final.apk` (~29.9 MB), firmado (verificado con
+`apksigner`: cert CN=PCAR/UNT sha256 2431ac1320...). JAR unsigned en jarsigner es
+normal (Unity usa APK Signature v2/v3, no jar).
+
+Nota batchmode (recurrente): si se reporta "JDK not found", fijar en la sesion
+`JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot` (la variable
+heredada apuntaba a la ruta vieja `...\Programs\OpenJDK\jdk-17`, invalida).
+
+Pendiente de validacion fisica: instalar PCAR_Final.apk en dispositivo Android y
+verificar ARCore + flujo completo con RAM.
+
+Estado: FASE 15 COMPLETADA. MVP (1-15) cubierto de forma incremental.
+
 ## Principios
 
 1. Que funcione.

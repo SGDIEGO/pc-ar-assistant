@@ -209,5 +209,108 @@ namespace PCAR.EditorTools
                 }
             }
         }
+
+        /// <summary>
+        /// FASE 15: aplica la firma (keystore autofirmado) al build Android.
+        /// </summary>
+        public static void ApplySigning()
+        {
+            string ksPath = System.IO.Path.GetFullPath(
+                System.IO.Path.Combine("..", "keystore", "pcar.keystore"));
+            if (!System.IO.File.Exists(ksPath))
+            {
+                Debug.LogError("[PCAR][Sign] No se encontro el keystore en " + ksPath);
+                return;
+            }
+
+#pragma warning disable 0618
+            PlayerSettings.Android.useCustomKeystore = true;
+            PlayerSettings.Android.keystoreName = ksPath;
+            PlayerSettings.Android.keystorePass = "pcar2026";
+            PlayerSettings.Android.keyaliasName = "pcar";
+            PlayerSettings.Android.keyaliasPass = "pcar2026";
+#pragma warning restore 0618
+
+            Debug.Log("[PCAR][Sign] Firma aplicada con keystore: " + ksPath);
+        }
+
+        /// <summary>
+        /// FASE 15: configuracion basica de splash e icono de la app Android.
+        /// Usa la imagen/color por defecto (sin assets custom) salvo que existan.
+        /// </summary>
+        public static void ApplySplashAndIcon()
+        {
+            PlayerSettings.SplashScreen.show = true;
+            PlayerSettings.SplashScreen.backgroundColor = new Color(0.06f, 0.07f, 0.10f);
+            Debug.Log("[PCAR][Splash] Splash configurado (fondo oscuro).");
+
+            // BuildSettings Android usa el icono por defecto de Unity; se puede
+            // sustituir por iconos custom en Assets/Icon/ mas adelante.
+            Debug.Log("[PCAR][Icon] Icono Android: usara el por defecto (sin assets custom).");
+        }
+
+        /// <summary>
+        /// FASE 15: genera el APK RELEASE firmado del flujo completo.
+        /// Escenas: MainMenu (inicio) + MainVR/MainAR (flujo). Firmado con keystore.
+        /// </summary>
+        public static void BuildReleaseApk()
+        {
+            Configure();
+
+            string[] scenes =
+            {
+                "Assets/Scenes/MainMenu.unity",
+                "Assets/Scenes/MainAR.unity"
+            };
+
+            foreach (var s in scenes)
+            {
+                if (!System.IO.File.Exists(s))
+                {
+                    Debug.LogError("[PCAR][Release] Falta la escena: " + s);
+                    return;
+                }
+            }
+
+            EditorBuildSettings.scenes = new[]
+            {
+                new EditorBuildSettingsScene(scenes[0], true),
+                new EditorBuildSettingsScene(scenes[1], true)
+            };
+
+            ApplySigning();
+            ApplySplashAndIcon();
+
+            string output = "Builds/PCAR_Final.apk";
+            System.IO.Directory.CreateDirectory("Builds");
+
+            var options = new BuildPlayerOptions
+            {
+                scenes = scenes,
+                target = BuildTarget.Android,
+                locationPathName = output,
+                options = BuildOptions.None
+            };
+
+            BuildReport report = BuildPipeline.BuildPlayer(options);
+            if (report.summary.result == BuildResult.Succeeded)
+            {
+                Debug.Log("[PCAR][Release] BUILD RELEASE OK -> " + output + " (" + report.summary.totalSize + " bytes)");
+            }
+            else
+            {
+                Debug.LogError("[PCAR][Release] BUILD FALLIDO: " + report.summary.result);
+                foreach (var step in report.steps)
+                {
+                    foreach (var msg in step.messages)
+                    {
+                        if (msg.type == LogType.Error)
+                        {
+                            Debug.LogError("[PCAR][Release] " + msg.content);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
