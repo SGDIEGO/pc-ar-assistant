@@ -321,6 +321,21 @@ IRecognitionService + MockRecognitionService + boton "Simular reconocimiento RAM
 Estado: FASE 8 COMPLETADA. Siguiente -> FASE 9 (pantalla de informacion de RAM:
 nombre, tipo, funcion, capacidad, velocidad, caracteristicas, advertencias).
 
+### FASE 9 — INFORMACION DE RAM (2026-08-29)
+
+`Assets/Scripts/UI/RamInfoScreen.cs` (namespace `PCAR.UI`):
+- Pantalla de informacion renderizada con GUI inmediata (OnGUI) para probarla en
+  batchmode sin wiring de prefabs; sustituible por canvas uGUI en Fase 12.
+- Muestra nombre, funcion, especificaciones (tipo/capacidad/velocidad, etc.) y
+  advertencias del componente.
+- Carga el componente desde `ComponentRepository.GetRam()` por defecto.
+- Botones fijos inferiores "Ensamblar" / "Desensamblar" con eventos
+  `OnAssembleRequested` / `OnDisassembleRequested` que enganchara la Fase 10/11.
+- Compilado verificado en batchmode (sin errores).
+
+Estado: FASE 9 COMPLETADA. Siguiente -> FASE 10 (guia de ensamblaje:
+AssemblyGuideController generico + pasos + navegacion Anterior/Siguiente).
+
 ## Principios
 
 1. Que funcione.
