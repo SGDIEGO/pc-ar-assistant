@@ -20,7 +20,7 @@ namespace PCAR.Core
 
         private void Awake()
         {
-            _recognition = new MockRecognitionService();
+            _recognition = RecognitionServiceFactory.Create();
         }
 
         private void Start()

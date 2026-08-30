@@ -399,6 +399,26 @@ quedan listos para ampliarlo.
 Estado: FASE 13 COMPLETADA. Siguiente -> FASE 14 (integracion IA:
 AIRecognitionService reemplaza al mock sin tocar el resto).
 
+### FASE 14 — INTEGRACION IA (skeleton) (2026-08-29)
+
+- `Assets/Scripts/Recognition/IRecognitionModel.cs` (interfaz en
+  `AIRecognitionService.cs`): punto de integracion de un modelo real de vision.
+  Implementarla = reconocer el componente, sin tocar el resto de la app.
+- `Assets/Scripts/Recognition/AIRecognitionService.cs`: reemplazo del mock.
+  Sin modelo conectado (o confianza < umbral 0.6) devuelve el mensaje estandar
+  "Componente no identificado. Intente acercarse o mejorar la iluminacion."
+- `Assets/Scripts/Recognition/RecognitionServiceFactory.cs`: UNICO punto de switch
+  `UseAI` (false por defecto -> mock). Activar IA no modifica el resto.
+- `PCARFlowController` ahora crea el servicio via factory (no instancia directa).
+- Compilado verificado en batchmode (sin errores).
+
+Nota: la integracion de un modelo real de vision (TensorFlow Lite / ML Kit /
+servicio externo) queda reservada para cuando se tenga el modelo; el contrato ya
+esta listo.
+
+Estado: FASE 14 COMPLETADA. Siguiente -> FASE 15 (optimizacion y APK final:
+splash, iconos, build release firmado).
+
 ## Principios
 
 1. Que funcione.
