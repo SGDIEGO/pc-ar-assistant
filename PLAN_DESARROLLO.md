@@ -336,6 +336,23 @@ nombre, tipo, funcion, capacidad, velocidad, caracteristicas, advertencias).
 Estado: FASE 9 COMPLETADA. Siguiente -> FASE 10 (guia de ensamblaje:
 AssemblyGuideController generico + pasos + navegacion Anterior/Siguiente).
 
+### FASE 10 — GUIA DE ENSAMBLAJE (2026-08-29)
+
+- `Assets/Scripts/Assembly/AssemblyGuideController.cs` (namespace `PCAR.Assembly`):
+  guia paso a paso generica y reutilizable. `Configure(List<AssemblyStep>)` recibe
+  los pasos (sirve igual para ensamblaje y desensamblaje). Muestra numero, titulo,
+  descripcion, hint AR y advertencia. Navegacion **Anterior / Siguiente** (Anterior
+  desactivado en el paso 1; al llegar al ultimo, "Finalizar"). Eventos
+  `OnCompleted` / `OnExitRequested`. Pantalla "Procedimiento completado".
+- `Assets/Scripts/Core/PCARFlowController.cs` (namespace `PCAR.Core`): orquesta el
+  flujo del MVP. InfoScreen <-> guia (ensamblaje con `assemblySteps`, desensamblaje
+  con `disassemblySteps`). Reconoce via MockRecognitionService, carga componente del
+  repository, y alterna escenas habilitando una a la vez.
+- Compilado verificado en batchmode (sin errores).
+
+Estado: FASE 10 COMPLETADA. Siguiente -> FASE 11 (guia de desensamblaje: misma
+arquitectura, pasos distintos - ya cubierto por el controller generico + RAM json).
+
 ## Principios
 
 1. Que funcione.
