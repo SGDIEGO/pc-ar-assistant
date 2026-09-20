@@ -116,6 +116,13 @@ Convención de modelado (Blender) para el usuario:
   reducir el proyecto.
 - MinSdk 29 OK para el POCO X7 (Android 15).
 - Los marcadores deben imprimirse planos y con buen contraste/features.
+- 🔶 **RESALTADO DE SELECCIÓN NO FUNCIONA** (pendiente de fix): `Assets/Scripts/SelectionOutline.cs`
+  (borde cian sobre la pieza seleccionada) se agregó junto con el arrastre del modelo con 1 dedo
+  (commit `33f3f18`, rama `Version2`). El borde **no se visualiza en el dispositivo**. El arrastre
+  con 1 dedo **sí funciona**. Diagnóstico a hacer: si el `ComponentSelector` encuentra la pieza,
+  si el material `Universal Render Pipeline/Unlit` del outline renderiza en URP/Android, y si la
+  pieza seleccionada tiene `MeshFilter`/`MeshRenderer` (el outline no debe usar `HideFlags.DontSave`
+  que lo excluya del build).
 
 ---
 
