@@ -18,7 +18,7 @@ public class InfoLabel3D : MonoBehaviour, IComponentInfoReceiver
     void LateUpdate()
     {
         Camera cam = Camera.main;
-        if (cam != null) transform.rotation = cam.transform.rotation;
+        if (cam != null) transform.rotation = Quaternion.LookRotation(cam.transform.forward, Vector3.up);
     }
 
     public void ShowComponent(ComponentInfo component)
