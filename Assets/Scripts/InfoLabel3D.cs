@@ -38,7 +38,7 @@ public class InfoLabel3D : MonoBehaviour, IComponentInfoReceiver
     {
         if (text == null) return;
         text.text = HeaderOpen + "Componentes de una PC" + ColorClose +
-                    "\nToca sobre la placa madre para ver cada componente.\nUsa dos dedos para girar o hacer zoom.";
+                    "\nToca sobre la placa madre para ver cada componente.\nArrastra con un dedo para mover la placa, usa dos dedos para girar o hacer zoom.";
     }
 
     static string Clamp(string s, int max)

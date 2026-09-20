@@ -95,6 +95,6 @@ public static class PCComponentsData
 
     public static string MainMenuBody
     {
-        get { return "Toca sobre la placa madre (CPU, RAM o SSD) para ver su información y los pasos de ensamblaje y desensamblaje.\n\nUsa dos dedos para girar o hacer zoom sobre el modelo."; }
+        get { return "Toca sobre la placa madre (CPU, RAM o SSD) para ver su información y los pasos de ensamblaje y desensamblaje.\n\nArrastra con un dedo para mover la placa; usa dos dedos para girar o hacer zoom."; }
     }
 }
