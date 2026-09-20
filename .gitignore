@@ -1,0 +1,41 @@
+# Unity generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]serSettings/
+[Dd]omainReload/
+.utmp/
+.hppos/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.vscode/
+.vsconfig
+*.csproj
+*.sln
+*.slnx
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+
+# Build output (the ready APK in Builds/ IS tracked as the deliverable)
+build/
+builds-local/
+
+# Android / Gradle
+gule950.guid
+*.keystore
+
+# Unity cache
+*.csproj.DotSettings.user
+.idea/
+
+# Large source art that does not fit in GitHub (884 MB)
+Assets/escultura01-MAX.blend
+
+# Git LFS pointer files live in the repo via .gitattributes (Vuforia tgz)

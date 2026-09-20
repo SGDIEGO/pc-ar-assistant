@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+  <Tracking>
+    <ImageTarget name="placa_madre_referencia_ccbysa" size="0.210000 0.174158" />
+  </Tracking>
+</QCARConfig>
