@@ -10,10 +10,14 @@ using Vuforia;
 
 public static class SceneBuilder
 {
-    const string ModelPath = "Assets/Models/PC_Components.fbx";
+    const string ModelPath = "Assets/Models/PC_Components_v2.fbx";
     const string imageTargetName = "ImageTarget";
     const string ScenePath = "Assets/Scenes/SampleScene.unity";
     const float ModelTargetSize = 0.11f;
+
+    // Giro del modelo sobre su eje normal, en grados, para alinearlo con el marcador.
+    // Valores utiles: 0, 90, 180, -90 (segun hacia donde quede el panel I/O del marcador).
+    const float ModelYawDegrees = 0f;
 
     [MenuItem("Tools/AR/1. Importar recursos TMP", false, 1)]
     public static void ImportTMP()
@@ -22,6 +26,25 @@ public static class SceneBuilder
         TMPro.TMP_PackageResourceImporter.ImportResources(true, false, false);
         AssetDatabase.Refresh();
         Debug.Log("[SceneBuilder] TMP Essential Resources importadas.");
+    }
+
+    // SelectionOutline lee los vertices de la malla en runtime, lo que exige Read/Write Enabled.
+    // Sin esto el contorno de seleccion lanza UnityException en el dispositivo, aunque en el
+    // editor funcione, porque en Play Mode las mallas siempre son legibles.
+    [MenuItem("Tools/AR/5. Corregir importacion del modelo", false, 5)]
+    public static void FixModelImport()
+    {
+        ModelImporter importer = AssetImporter.GetAtPath(ModelPath) as ModelImporter;
+        if (importer == null)
+        {
+            Debug.LogError("[SceneBuilder] No se encontro ModelImporter en " + ModelPath);
+            return;
+        }
+        if (importer.isReadable) { Debug.Log("[SceneBuilder] isReadable ya activo."); return; }
+
+        importer.isReadable = true;
+        importer.SaveAndReimport();
+        Debug.Log("[SceneBuilder] isReadable=true aplicado en " + ModelPath);
     }
 
     [MenuItem("Tools/AR/4. Diagnóstico modelo", false, 4)]
@@ -117,6 +140,7 @@ public static class SceneBuilder
     public static void RebuildScene()
     {
         ImportTMP();
+        FixModelImport();
 
         GameObject target = GameObject.Find(imageTargetName);
         if (target == null)
@@ -201,7 +225,7 @@ public static class SceneBuilder
         if (lb.valid)
         {
             Quaternion align = Quaternion.FromToRotation(lb.upAxis, Vector3.forward);
-            model.transform.localRotation = align * Quaternion.Euler(38f, 0f, 0f);
+            model.transform.localRotation = align * Quaternion.Euler(38f, ModelYawDegrees, 0f);
         }
 
         float s = FitScale(model, ModelTargetSize);
@@ -214,12 +238,11 @@ public static class SceneBuilder
         AssignMaterials(model);
         AddColliders(model);
 
-        Transform cpu = model.transform.Find("MotherboardRoot/CPU_Assembly");
-        Transform ram = model.transform.Find("MotherboardRoot/RAM_Assembly");
-        Transform ssd = model.transform.Find("MotherboardRoot/SSD_Assembly");
-        if (cpu == null) cpu = FindRecursive(model.transform, "CPU_Assembly");
-        if (ram == null) ram = FindRecursive(model.transform, "RAM_Assembly");
-        if (ssd == null) ssd = FindRecursive(model.transform, "SSD_Assembly");
+        // Unity colapsa la raiz unica del FBX como raiz del prefab y esta se renombra a PC_Model,
+        // por lo que MotherboardRoot puede o no existir como nivel intermedio.
+        Transform cpu = FindAssembly(model.transform, "CPU_Assembly");
+        Transform ram = FindAssembly(model.transform, "RAM_Assembly");
+        Transform ssd = FindAssembly(model.transform, "SSD_Assembly");
 
         if (cpu != null) cpu.gameObject.AddComponent<ComponentInfo>(); Configure(cpu, PCComponentsData.GetCPU());
         if (ram != null) ram.gameObject.AddComponent<ComponentInfo>(); Configure(ram, PCComponentsData.GetRAM());
@@ -389,6 +412,16 @@ public static class SceneBuilder
         wb = WorldBounds(model.gameObject);
         Vector3 minPt = parent.InverseTransformPoint(new Vector3(wb.center.x, wb.center.y, wb.min.z));
         model.position += parent.TransformVector(new Vector3(0f, 0f, bottomZ - minPt.z));
+    }
+
+    static Transform FindAssembly(Transform model, string name)
+    {
+        Transform t = model.Find("MotherboardRoot/" + name);
+        if (t == null) t = model.Find(name);
+        if (t == null) t = FindRecursive(model, name);
+        if (t == null)
+            Debug.LogWarning("[SceneBuilder] No se encontro la ensamblaje " + name + ".");
+        return t;
     }
 
     static Transform FindRecursive(Transform root, string name)

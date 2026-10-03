@@ -12,6 +12,7 @@ public class SelectionOutline : MonoBehaviour
 
     GameObject _outlineGO;
     Material _outlineMaterial;
+    Mesh _outlineMesh;
     Transform _currentTarget;
 
     public void Show(ComponentInfo target)
@@ -58,8 +59,14 @@ public class SelectionOutline : MonoBehaviour
         _outlineGO.transform.localScale = Vector3.one;
 
         Mesh src = filter.sharedMesh;
-        Mesh outlineMesh = new Mesh();
-        outlineMesh.name = src.name + "_Outline";
+        if (src == null || src.vertexCount == 0) return;
+
+        if (_outlineMesh == null)
+        {
+            _outlineMesh = new Mesh { name = "SelectionOutline", hideFlags = HideFlags.HideAndDontSave };
+        }
+        _outlineMesh.Clear();
+
         Vector3[] verts = src.vertices;
         Vector3[] normals = src.normals;
         Vector3[] outVerts = new Vector3[verts.Length];
@@ -70,16 +77,23 @@ public class SelectionOutline : MonoBehaviour
             Vector3 n = normals != null && normals.Length > i ? normals[i] : Vector3.one;
             outVerts[i] = verts[i] + n * offset;
         }
-        outlineMesh.vertices = outVerts;
-        outlineMesh.normals = src.normals;
-        outlineMesh.tangents = src.tangents;
-        outlineMesh.uv = src.uv;
-        outlineMesh.colors = src.colors;
-        outlineMesh.triangles = src.triangles;
-        outlineMesh.RecalculateBounds();
+        _outlineMesh.vertices = outVerts;
+        // tangents, uv y colors pueden venir null en mallas importadas y asignar null lanza excepcion.
+        if (normals != null) _outlineMesh.normals = normals;
+        if (src.tangents != null) _outlineMesh.tangents = src.tangents;
+        if (src.uv != null) _outlineMesh.uv = src.uv;
+        if (src.colors != null) _outlineMesh.colors = src.colors;
+        _outlineMesh.triangles = src.triangles;
+        _outlineMesh.RecalculateBounds();
 
-        _outlineGO.GetComponent<MeshFilter>().mesh = outlineMesh;
+        _outlineGO.GetComponent<MeshFilter>().sharedMesh = _outlineMesh;
         _outlineGO.SetActive(true);
+    }
+
+    void OnDestroy()
+    {
+        if (_outlineMesh != null) Destroy(_outlineMesh);
+        if (_outlineMaterial != null) Destroy(_outlineMaterial);
     }
 
     public void Hide()
