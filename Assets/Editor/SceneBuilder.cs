@@ -13,7 +13,7 @@ public static class SceneBuilder
     const string ModelPath = "Assets/Models/PC_Components_v2.fbx";
     const string imageTargetName = "ImageTarget";
     const string ScenePath = "Assets/Scenes/SampleScene.unity";
-    const float ModelTargetSize = 0.55f;
+    const float ModelTargetSize = 2.20f;
 
     // Giro del modelo sobre su eje normal, en grados, para alinearlo con el marcador.
     // Valores utiles: 0, 90, 180, -90 (segun hacia donde quede el panel I/O del marcador).
@@ -225,7 +225,7 @@ public static class SceneBuilder
         if (lb.valid)
         {
             Quaternion align = Quaternion.FromToRotation(lb.upAxis, Vector3.forward);
-            model.transform.localRotation = align * Quaternion.Euler(-10f, ModelYawDegrees, 0f);
+            model.transform.localRotation = align * Quaternion.Euler(-30f, ModelYawDegrees, 0f);
         }
 
         float s = FitScale(model, ModelTargetSize);
@@ -233,7 +233,7 @@ public static class SceneBuilder
         Debug.Log("[SceneBuilder] Ancho horizontal medido=" + (ModelTargetSize / s).ToString("0.000")
             + " m -> escala aplicada=" + s.ToString("0.00"));
 
-        CenterOnMarker(model.transform, parent.transform, 0.05f);
+        CenterOnMarker(model.transform, parent.transform, 0.08f);
 
         AssignMaterials(model);
         AddColliders(model);
