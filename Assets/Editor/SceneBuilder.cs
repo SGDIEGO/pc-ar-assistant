@@ -13,7 +13,7 @@ public static class SceneBuilder
     const string ModelPath = "Assets/Models/PC_Components_v2.fbx";
     const string imageTargetName = "ImageTarget";
     const string ScenePath = "Assets/Scenes/SampleScene.unity";
-    const float ModelTargetSize = 2.20f;
+    const float ModelTargetSize = 0.21f;
 
     // Giro del modelo sobre su eje normal, en grados, para alinearlo con el marcador.
     // Valores utiles: 0, 90, 180, -90 (segun hacia donde quede el panel I/O del marcador).
