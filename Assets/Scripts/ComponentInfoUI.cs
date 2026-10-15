@@ -131,7 +131,8 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         if (bodyText != null) bodyText.text = text;
         bool isSteps = tab == TAB_ASSEMBLE || tab == TAB_DISASSEMBLE;
         if (stepsArea != null) stepsArea.SetActive(isSteps);
-        if (infoArea != null) infoArea.SetActive(tab == TAB_INFO);
+        // infoArea (el scroll con el texto) se mantiene SIEMPRE visible.
+        // Solo se oculta/muestra el hint de desensamblaje y los botones de navegación.
         if (disassembleHintArea != null) disassembleHintArea.SetActive(tab == TAB_DISASSEMBLE);
         if (stepCounterText != null)
         {
