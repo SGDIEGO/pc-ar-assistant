@@ -30,8 +30,8 @@ public class InfoLabel3D : MonoBehaviour, IComponentInfoReceiver
             return;
         }
 
-        string body = Clamp(component.description, MaxChars);
-        text.text = HeaderOpen + component.componentName + ColorClose + "\n" + body;
+        // El banner inferior lleva la descripcion; aqui solo el titulo.
+        text.text = HeaderOpen + component.componentName + ColorClose;
     }
 
     public void ShowMainMenu()

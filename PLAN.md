@@ -18,8 +18,9 @@ información general e instrucciones de cómo ensamblar / desensamblar.
 | Target/marcador actual | `maxdiaz` → imagen `maximodiaz.png` (marcador impreso, 1.0 × 2.217 m) |
 | Modelo 3D | `escultura01-MAX.blend` (884 MB) |
 | Dataset Vuforia | `Assets/StreamingAssets/Vuforia/Escultura.{dat,xml}` (1 ImageTarget) |
-| Plataforma de build | Android (`com.MiProyecto.EsculturaAR`, minSdk 29) + URP |
-| Scripts propios | Solo `VuforiaLicense.cs` (licencia) y TutorialInfo (`Readme.cs`) |
+| Plataforma de build | Android (`com.MiProyecto.EsculturaAR`, minSdk 29) |
+| **Render pipeline** | **Built-in RP** (confirmado, ver §5.1) |
+| Scripts propios | `VuforiaLicense.cs` + `Scripts/` (ComponentInfo, ComponentInfoUI, ComponentSelector, OrbitTouch, SelectionOutline, InfoLabel3D, PCComponentsData) + `Editor/` (SceneBuilder, BuildScript) |
 | Código de interoperación AR | Ninguno: el contenido (modelo + texto) son hijos del ImageTarget y aparecen/desaparecen con el tracking |
 
 ### Entorno de la máquina (verificado)
@@ -109,20 +110,65 @@ Convención de modelado (Blender) para el usuario:
 
 ## 5. Riesgos / notas
 
-- Licencia Vuforia actual tipo Development: sirve para pruebas/clase; no para
-  distribución pública.
+### 5.1 Render pipeline: **Built-in RP, NO URP** (verificado 2026-10-04)
+
+Aunque el paquete URP 17.5.0 esta instalado, **ningun Render Pipeline Asset esta asignado**:
+
+| Fichero | Valor |
+|---|---|
+| `ProjectSettings/GraphicsSettings.asset` | `m_CustomRenderPipeline: {fileID: 0}` |
+| `ProjectSettings/QualitySettings.asset` | `customRenderPipeline: {fileID: 0}` en los **6** niveles de calidad |
+| `Assets/Settings/Mobile_RPAsset.asset`, `PC_RPAsset.asset` | existen pero **huerfanos** (nadie los referencia) |
+
+=> Unity corre con **Built-in Render Pipeline**. Los shaders de Vuforia y de TextMeshPro del
+proyecto lo confirman: `Assets/Resources/VuforiaConfiguration.asset` apunta a
+`Vuforia/Shaders/Built-In/{VideoBackground,DepthMask,DepthContour}.shader` y todos los
+`Assets/TextMesh Pro/Shaders/*.shader` son `CGPROGRAM` + `UnityCG.cginc` (solo Built-in).
+
+**NO activar URP.** El paquete de Vuforia 11.4.4 solo trae 3 shaders URP
+(`CameraDiffuse_URP`, `DepthContourLine_URP`, `DepthContourMask_URP`) y **no existe
+`VideoBackground_URP.shader`**. Al activar URP se perderia el fondo de camara (pantalla morada)
+y todo el texto de TMP se volveria morado. Los materiales `Assets/Materials/PC_*.mat` usan el
+shader built-in `Standard` y son correctos tal cual; si alguna vez se migra a URP hay que
+pasarlos a `Universal Render Pipeline/Lit` con `_BaseColor` / `_Metallic` / `_Smoothness`.
+
+### 5.2 Bugs corregidos (2026-10-04)
+
+| Sintoma | Causa | Correccion |
+|---|---|---|
+| Pieza morada al tocarla | `SelectionOutline` resolvia `"Universal Render Pipeline/Unlit"`, shader de SRP que bajo Built-in RP se dibuja en magenta. La malla del contorno es la pieza inflada con `Cull Off`, asi que la cubria entera | Material asset `Assets/Resources/SelectionOutline.mat` (shader `Unlit/Color`) cargado desde `Resources`, sin `Shader.Find` en runtime. Ademas `GetComponentsInChildren<MeshFilter>()` para abarcar todas las piezas de la ensamblaje |
+| A veces no renderiza nada | `Shader.Find` en un player solo encuentra shaders incluidos; al fallar ambos intentos se hacia `new Material(null)`, dejando el `MeshRenderer` sin material | Si no hay material, log de error y `return`. Nunca `new Material(null)` |
+| El modelo salta de tamano al hacer pinching | `OrbitTouch` clampeaba la escala **absoluta** a `[0.4, 2.5]` cuando la escala real del modelo es ~0.06: el primer frame saltaba a 6.6x y ya no podia encogerse | `minScaleFactor` / `maxScaleFactor` relativos a la escala base capturada en `Awake` |
+| El modelo sale pequeno / descolocado | `ConfigureTarget` declaraba `0.21 x 0.174158` (ratio 1.2058, el del JPG con el que se entreno el target) pero se imprime el PNG `placa_madre_marker.png` (ratio 1.4139, hecho a medida para A4) | Marcador y modelo a **A4 apaisado: 0.297 x 0.21 m**. `FitScale` ajustado por los dos ejes con `min()` en vez de `max(size.x, size.y)`, para que la escala no dependa de la inclinacion |
+
+Otros arreglos: guarda contra `Shader.Find("Standard")` nulo; material por defecto
+`PC_default` para renderers cuyo material del FBX no esta en la paleta; `AssignMaterials`
+idempotente (quita el prefijo `PC_` antes de buscar en la paleta, si no la segunda
+ejecucion perdia todos los colores); `OrbitTouch` resetea el estado del pinching cuando
+se sueltan los dedos.
+
+### 5.3 Pendiente / limitaciones
+
+- **Licencia Vuforia** tipo Development: sirve para pruebas/clase; no para distribucion pública.
 - Vuforia Engine 11.4.4 no incluye ARFoundation; el plan no lo usa.
-- El `.blend` de 884 MB se retira de la escena; opcional decimar/optimizar para
-  reducir el proyecto.
+- **El target se entreno con una imagen de otro ratio.** `Componentes.dat` se genero desde
+  `placa_madre_referencia_CCBYSA.jpg` (ratio 1.2058) y se imprime
+  `placa_madre_marker.png` (ratio 1.4139): un 17% de discrepancia que degrada la robustez
+  del tracking. Declarar `0.297 x 0.21` corrige la escala metrica pero no elimina esa
+  discrepancia. La solucion limpia es subir el **PNG** al Target Manager, sigue bloqueado
+  por la cuenta (ver §4.3).
+- **Imprimir el marcador a tamano real, sin escalar.** Si la impresora aplica "ajustar al area
+  imprimible" recorta ~5 mm por lado y el tamano declarado deja de cuadrar.
 - MinSdk 29 OK para el POCO X7 (Android 15).
 - Los marcadores deben imprimirse planos y con buen contraste/features.
-- 🔶 **RESALTADO DE SELECCIÓN NO FUNCIONA** (pendiente de fix): `Assets/Scripts/SelectionOutline.cs`
-  (borde cian sobre la pieza seleccionada) se agregó junto con el arrastre del modelo con 1 dedo
-  (commit `33f3f18`, rama `Version2`). El borde **no se visualiza en el dispositivo**. El arrastre
-  con 1 dedo **sí funciona**. Diagnóstico a hacer: si el `ComponentSelector` encuentra la pieza,
-  si el material `Universal Render Pipeline/Unlit` del outline renderiza en URP/Android, y si la
-  pieza seleccionada tiene `MeshFilter`/`MeshRenderer` (el outline no debe usar `HideFlags.DontSave`
-  que lo excluya del build).
+- ~~RESALTADO DE SELECCION NO FUNCIONA~~ → **corregido**, ver §5.2.
+
+### 5.4 Siguiente paso
+
+Ejecutar `Tools/AR/2. Reconstruir escena AR` en Unity 6000.5.10f1 para que la escena vuelva a
+ser coherente con el script: la escena estaba editada a mano (rotacion +38° en X frente a los
+-30° que escribia el codigo, y `m_LocalEulerAnglesHint` obsoleto en `{0,0,0}`), de modo que la
+escala guardada (0.0607129) se habia calculado para una orientacion que ya no era la vigente.
 
 ---
 

@@ -17,6 +17,9 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     public GameObject infoArea;
     public GameObject disassembleHintArea;
 
+    [Tooltip("Receptor secundario (etiqueta 3D) que se actualiza junto al banner. Debe ser tipo concreto para serializar.")]
+    public InfoLabel3D mirror;
+
     public ComponentInfo Current { get; private set; }
     public int CurrentTab { get; private set; }
 
@@ -30,6 +33,8 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     {
         Current = component;
         _stepIndex = 0;
+        gameObject.SetActive(true);
+        if (mirror != null) mirror.ShowComponent(component);
         if (titleText != null)
             titleText.text = component != null ? component.componentName : "";
         if (component == null)
@@ -88,6 +93,8 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     public void ShowMainMenu()
     {
         Current = null;
+        gameObject.SetActive(false);
+        if (mirror != null) mirror.ShowMainMenu();
         if (titleText != null) titleText.text = "Componentes de la PC";
         SelectTab(TAB_INFO);
     }
