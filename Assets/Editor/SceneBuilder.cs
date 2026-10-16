@@ -1150,7 +1150,7 @@ static float FitScale(GameObject model, float targetWidth, float targetHeight)
             bbSize = boardMesh.bounds.size;
         }
         float panelW = Mathf.Max(bbSize.x, Mathf.Max(bbSize.y, bbSize.z)) * 1.15f;
-        float panelH = panelW * 0.66f;
+        float panelH = panelW * 0.9f;
         float thinHalf = Mathf.Min(bbSize.x, Mathf.Min(bbSize.y, bbSize.z)) * 0.5f;
         // Normal de la placa en espacio de malla = eje delgado (la placa esta plana).
         Vector3 n = bbSize.x <= bbSize.y && bbSize.x <= bbSize.z ? Vector3.right

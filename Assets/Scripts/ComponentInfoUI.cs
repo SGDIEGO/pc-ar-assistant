@@ -63,12 +63,7 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         switch (tab)
         {
             case TAB_INFO:
-                SetBody(
-                    Current.description + "\n\n<color=#8FCBFF>FUNCIÓN</color>\n" + Current.function +
-                    (string.IsNullOrEmpty(Current.specifications)
-                        ? ""
-                        : "\n\n<color=#8FCBFF>ESPECIFICACIONES</color>\n" + Current.specifications),
-                    tab);
+                SetBody(Current.description, tab);
                 break;
             case TAB_ASSEMBLE:
                 ShowStep(Current.assembleSteps, tab);
