@@ -115,7 +115,7 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         string content = "<color=#FFD27F>PASO " + (_stepIndex + 1) + " de " + steps.Length + "</color>\n\n" + steps[_stepIndex];
         if (steps.Length > 1)
         {
-            content += "\n\n<size=70%><color=#AAAAAA>Pulsa Siguiente / Anterior para navegar.</color></size>";
+            content += "\n\n<size=70%><color=#AAAAAA>↑ Siguiente    ↓ Anterior</color></size>";
         }
         SetBody(content, tab);
         if (stepCounterText != null)
