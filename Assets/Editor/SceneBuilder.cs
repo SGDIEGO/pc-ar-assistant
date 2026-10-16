@@ -1310,6 +1310,9 @@ static float FitScale(GameObject model, float targetWidth, float targetHeight)
         // infoArea: el contenido del scroll (donde va la descripción)
         ui.infoArea = content;
 
+        // viewport para detección de swipe en carrusel de pasos
+        ui.viewport = vrt;
+
         // disassembleHintArea: un texto indicativo solo para pestaña Desensamblaje
         GameObject hintGo = new GameObject("DisassembleHintArea");
         hintGo.transform.SetParent(root.transform, false);
@@ -1392,6 +1395,15 @@ static float FitScale(GameObject model, float targetWidth, float targetHeight)
         ComponentSelector sel = inter.AddComponent<ComponentSelector>();
         sel.arCamera = cam;
         sel.infoUI = banner;
+
+        // Asegurar EventSystem con InputSystemUIInputModule para world-space canvas
+        if (Object.FindObjectOfType<EventSystem>() == null)
+        {
+            GameObject esGo = new GameObject("EventSystem");
+            esGo.AddComponent<EventSystem>();
+            esGo.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
+            Debug.Log("[SceneBuilder] EventSystem con InputSystemUIInputModule creado.");
+        }
 
         OrbitTouch orbit = model.GetComponent<OrbitTouch>();
         if (orbit == null) orbit = model.AddComponent<OrbitTouch>();

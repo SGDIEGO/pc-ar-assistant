@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
 {
@@ -16,6 +17,7 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     public GameObject stepsArea;
     public GameObject infoArea;
     public GameObject disassembleHintArea;
+    public RectTransform viewport; // Para detección de swipe en carrusel
 
     [Tooltip("Receptor secundario (etiqueta 3D) que se actualiza junto al banner. Debe ser tipo concreto para serializar.")]
     public InfoLabel3D mirror;
@@ -28,6 +30,9 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     const int TAB_DISASSEMBLE = 2;
 
     int _stepIndex;
+    Vector2 _dragStartPos;
+    bool _draggingSteps;
+    const float SwipeThreshold = 40f; // píxeles
 
     public void ShowComponent(ComponentInfo component)
     {
@@ -146,8 +151,7 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
                 stepCounterText.text = "";
             }
         }
-        if (prevButton != null) prevButton.interactable = isSteps;
-        if (nextButton != null) nextButton.interactable = isSteps;
+        // NO tocar interactable aquí: ShowStep ya lo configura según _stepIndex
     }
 
     void UpdateTabVisual()
@@ -164,5 +168,51 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         if (button == null) return;
         Image img = button.targetGraphic as Image;
         if (img != null) img.color = color;
+    }
+
+    void Update()
+    {
+        if (!IsInStepsTab() || Current == null) return;
+        HandleStepSwipe();
+    }
+
+    bool IsInStepsTab()
+    {
+        return CurrentTab == TAB_ASSEMBLE || CurrentTab == TAB_DISASSEMBLE;
+    }
+
+    void HandleStepSwipe()
+    {
+        Touchscreen touch = Touchscreen.current;
+        if (touch == null) return;
+        var primary = touch.primaryTouch;
+
+        if (primary.press.wasPressedThisFrame)
+        {
+            _dragStartPos = primary.position.ReadValue();
+            _draggingSteps = IsOverViewport(_dragStartPos);
+        }
+        else if (_draggingSteps && primary.press.isPressed)
+        {
+            Vector2 delta = primary.position.ReadValue() - _dragStartPos;
+            if (Mathf.Abs(delta.y) > SwipeThreshold)
+            {
+                if (delta.y > 0) PrevStep();
+                else NextStep();
+                _draggingSteps = false;
+            }
+        }
+        else if (primary.press.wasReleasedThisFrame)
+        {
+            _draggingSteps = false;
+        }
+    }
+
+    bool IsOverViewport(Vector2 screenPos)
+    {
+        if (viewport == null) return false;
+        // Para world-space canvas, necesitamos pasar la cámara del canvas
+        Camera canvasCam = viewport.GetComponentInParent<Canvas>().worldCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(viewport, screenPos, canvasCam);
     }
 }
