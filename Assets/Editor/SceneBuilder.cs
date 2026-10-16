@@ -1313,24 +1313,6 @@ static float FitScale(GameObject model, float targetWidth, float targetHeight)
         // viewport para detección de swipe en carrusel de pasos
         ui.viewport = vrt;
 
-        // disassembleHintArea: un texto indicativo solo para pestaña Desensamblaje
-        GameObject hintGo = new GameObject("DisassembleHintArea");
-        hintGo.transform.SetParent(root.transform, false);
-        RectTransform hrt = hintGo.AddComponent<RectTransform>();
-        hrt.anchorMin = new Vector2(0f, 0f);
-        hrt.anchorMax = new Vector2(1f, 0f);
-        hrt.pivot = new Vector2(0.5f, 0f);
-        hrt.offsetMin = new Vector2(panelW * 0.05f, navH + panelW * 0.015f);
-        hrt.offsetMax = new Vector2(-panelW * 0.05f, navH + panelH * 0.15f);
-        TextMeshProUGUI hintText = hintGo.AddComponent<TextMeshProUGUI>();
-        hintText.fontSize = panelW * 0.045f;
-        hintText.color = new Color(0.8f, 0.85f, 0.9f);
-        hintText.alignment = TextAlignmentOptions.Center;
-        hintText.textWrappingMode = TextWrappingModes.Normal;
-        hintText.richText = true;
-        hintText.text = "<color=#FFD27F>Desensamblaje</color>\nPulsa <color=#8FCBFF>Siguiente ▶</color> para ver los pasos.";
-        ui.disassembleHintArea = hintGo;
-
         ui.mirror = null;
 
         tabInfo.onClick.AddListener(() => ui.SelectTab(0));
