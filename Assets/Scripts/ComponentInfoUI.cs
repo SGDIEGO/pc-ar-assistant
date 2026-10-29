@@ -18,6 +18,7 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     public GameObject infoArea;
     public GameObject disassembleHintArea;
     public RectTransform viewport; // Para detección de swipe en carrusel
+    public ScrollRect bodyScrollRect;
 
     [Tooltip("Receptor secundario (etiqueta 3D) que se actualiza junto al banner. Debe ser tipo concreto para serializar.")]
     public InfoLabel3D mirror;
@@ -54,6 +55,14 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     {
         CurrentTab = tab;
         UpdateTabVisual();
+        if (bodyScrollRect != null)
+        {
+            // El scroll del texto solo debe consumir gestos verticales en Descripción.
+            // En Ensamblaje/Desensamblaje, el gesto vertical cambia de paso.
+            bodyScrollRect.horizontal = false;
+            bodyScrollRect.vertical = tab == TAB_INFO;
+            bodyScrollRect.StopMovement();
+        }
         if (Current == null)
         {
             SetBody("", tab);
@@ -189,10 +198,10 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         else if (_draggingSteps && primary.press.isPressed)
         {
             Vector2 delta = primary.position.ReadValue() - _dragStartPos;
-            if (Mathf.Abs(delta.y) > SwipeThreshold)
+            if (Mathf.Abs(delta.y) > SwipeThreshold && Mathf.Abs(delta.y) > Mathf.Abs(delta.x) * 1.5f)
             {
-                if (delta.y > 0) PrevStep();
-                else NextStep();
+                if (delta.y > 0) NextStep();
+                else PrevStep();
                 _draggingSteps = false;
             }
         }

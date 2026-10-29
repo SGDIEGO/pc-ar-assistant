@@ -1073,6 +1073,7 @@ static float FitScale(GameObject model, float targetWidth, float targetHeight)
         ui.stepsArea = navRow;
         ui.infoArea = null;
         ui.disassembleHintArea = null;
+        ui.bodyScrollRect = scroll;
         ui.mirror = label;
 
         tabInfo.onClick.AddListener(() => ui.SelectTab(0));
@@ -1309,6 +1310,7 @@ static float FitScale(GameObject model, float targetWidth, float targetHeight)
 
         // infoArea: el contenido del scroll (donde va la descripción)
         ui.infoArea = content;
+        ui.bodyScrollRect = scroll;
 
         // viewport para detección de swipe en carrusel de pasos
         ui.viewport = vrt;
