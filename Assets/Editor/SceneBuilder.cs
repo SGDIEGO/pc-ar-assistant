@@ -327,6 +327,10 @@ public static void ProbeTargetSize()
             return;
         }
 
+        ARWelcomeScannerUI welcomeUI = cam.GetComponent<ARWelcomeScannerUI>();
+        if (welcomeUI == null) welcomeUI = cam.gameObject.AddComponent<ARWelcomeScannerUI>();
+        welcomeUI.target = target.GetComponent<ImageTargetBehaviour>();
+
         GameObject model = BuildModel(target.transform);
         if (model == null) return;
 

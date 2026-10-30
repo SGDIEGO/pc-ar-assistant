@@ -29,10 +29,13 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
     const int TAB_INFO = 0;
     const int TAB_ASSEMBLE = 1;
     const int TAB_DISASSEMBLE = 2;
+    static ScreenOrientation _lastKnownGestureOrientation = ScreenOrientation.Portrait;
 
     int _stepIndex;
     Vector2 _dragStartPos;
     bool _draggingSteps;
+    ScreenOrientation _dragOrientation;
+    ScreenOrientation _lastHintOrientation = ScreenOrientation.Unknown;
     const float SwipeThreshold = 40f; // píxeles
 
     public void ShowComponent(ComponentInfo component)
@@ -119,7 +122,11 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         string content = "<color=#FFD27F>PASO " + (_stepIndex + 1) + " de " + steps.Length + "</color>\n\n" + steps[_stepIndex];
         if (steps.Length > 1)
         {
-            content += "\n\n<size=70%><color=#AAAAAA>↑ Siguiente    ↓ Anterior</color></size>";
+            Vector2 nextDirection = PortraitDeltaToScreen(Vector2.up, GestureOrientation);
+            Vector2 previousDirection = -nextDirection;
+            content += "\n\n<size=70%><color=#AAAAAA>"
+                + DirectionArrow(nextDirection) + " Siguiente    "
+                + DirectionArrow(previousDirection) + " Anterior</color></size>";
         }
         SetBody(content, tab);
         if (stepCounterText != null)
@@ -175,6 +182,15 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
 
     void Update()
     {
+        ScreenOrientation orientation = GestureOrientation;
+        if (orientation != _lastHintOrientation)
+        {
+            _lastHintOrientation = orientation;
+            _draggingSteps = false;
+            if (Current != null && IsInStepsTab())
+                ShowStep(StepsForTab(CurrentTab), CurrentTab);
+        }
+
         if (!IsInStepsTab() || Current == null) return;
         HandleStepSwipe();
     }
@@ -194,10 +210,12 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         {
             _dragStartPos = primary.position.ReadValue();
             _draggingSteps = IsOverViewport(_dragStartPos);
+            _dragOrientation = GestureOrientation;
         }
         else if (_draggingSteps && primary.press.isPressed)
         {
-            Vector2 delta = primary.position.ReadValue() - _dragStartPos;
+            Vector2 screenDelta = primary.position.ReadValue() - _dragStartPos;
+            Vector2 delta = ScreenDeltaToPortrait(screenDelta, _dragOrientation);
             if (Mathf.Abs(delta.y) > SwipeThreshold && Mathf.Abs(delta.y) > Mathf.Abs(delta.x) * 1.5f)
             {
                 if (delta.y > 0) NextStep();
@@ -217,5 +235,86 @@ public class ComponentInfoUI : MonoBehaviour, IComponentInfoReceiver
         // Para world-space canvas, necesitamos pasar la cámara del canvas
         Camera canvasCam = viewport.GetComponentInParent<Canvas>().worldCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(viewport, screenPos, canvasCam);
+    }
+
+    public static ScreenOrientation GestureOrientation
+    {
+        get
+        {
+            ScreenOrientation screenOrientation = Screen.orientation;
+            if (IsConcreteOrientation(screenOrientation))
+            {
+                _lastKnownGestureOrientation = screenOrientation;
+                return screenOrientation;
+            }
+
+            switch (Input.deviceOrientation)
+            {
+                case DeviceOrientation.Portrait: return RememberOrientation(ScreenOrientation.Portrait);
+                case DeviceOrientation.PortraitUpsideDown: return RememberOrientation(ScreenOrientation.PortraitUpsideDown);
+                case DeviceOrientation.LandscapeLeft: return RememberOrientation(ScreenOrientation.LandscapeLeft);
+                case DeviceOrientation.LandscapeRight: return RememberOrientation(ScreenOrientation.LandscapeRight);
+            }
+
+            if (Screen.width <= Screen.height)
+                return RememberOrientation(ScreenOrientation.Portrait);
+
+            if (_lastKnownGestureOrientation == ScreenOrientation.LandscapeLeft
+                || _lastKnownGestureOrientation == ScreenOrientation.LandscapeRight)
+                return _lastKnownGestureOrientation;
+
+            return RememberOrientation(ScreenOrientation.LandscapeLeft);
+        }
+    }
+
+    static ScreenOrientation RememberOrientation(ScreenOrientation orientation)
+    {
+        _lastKnownGestureOrientation = orientation;
+        return orientation;
+    }
+
+    static bool IsConcreteOrientation(ScreenOrientation orientation)
+    {
+        return orientation == ScreenOrientation.Portrait
+            || orientation == ScreenOrientation.PortraitUpsideDown
+            || orientation == ScreenOrientation.LandscapeLeft
+            || orientation == ScreenOrientation.LandscapeRight;
+    }
+
+    public static Vector2 ScreenDeltaToPortrait(Vector2 screenDelta, ScreenOrientation orientation)
+    {
+        switch (orientation)
+        {
+            case ScreenOrientation.PortraitUpsideDown:
+                return -screenDelta;
+            case ScreenOrientation.LandscapeLeft:
+                return new Vector2(screenDelta.y, -screenDelta.x);
+            case ScreenOrientation.LandscapeRight:
+                return new Vector2(-screenDelta.y, screenDelta.x);
+            default:
+                return screenDelta;
+        }
+    }
+
+    static Vector2 PortraitDeltaToScreen(Vector2 portraitDelta, ScreenOrientation orientation)
+    {
+        switch (orientation)
+        {
+            case ScreenOrientation.PortraitUpsideDown:
+                return -portraitDelta;
+            case ScreenOrientation.LandscapeLeft:
+                return new Vector2(-portraitDelta.y, portraitDelta.x);
+            case ScreenOrientation.LandscapeRight:
+                return new Vector2(portraitDelta.y, -portraitDelta.x);
+            default:
+                return portraitDelta;
+        }
+    }
+
+    static string DirectionArrow(Vector2 direction)
+    {
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            return direction.x > 0f ? "→" : "←";
+        return direction.y > 0f ? "↑" : "↓";
     }
 }

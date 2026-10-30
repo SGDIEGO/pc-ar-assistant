@@ -11,10 +11,12 @@ public class BannerSwipe : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     Vector2 _start;
     bool _tracking;
+    ScreenOrientation _orientation;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         _start = eventData.position;
+        _orientation = ComponentInfoUI.GestureOrientation;
         _tracking = true;
     }
 
@@ -24,7 +26,7 @@ public class BannerSwipe : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         if (!_tracking || target == null) return;
         _tracking = false;
-        Vector2 d = eventData.position - _start;
+        Vector2 d = ComponentInfoUI.ScreenDeltaToPortrait(eventData.position - _start, _orientation);
         if (Mathf.Abs(d.x) > minSwipePx && Mathf.Abs(d.x) > Mathf.Abs(d.y) * 1.5f)
             target.SelectTab(Mathf.Clamp(target.CurrentTab + (d.x < 0 ? 1 : -1), 0, 2));
     }
